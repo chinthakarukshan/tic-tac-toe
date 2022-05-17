@@ -61,6 +61,7 @@ import './index.css';
             history: [{
                 squares: Array(9).fill(null),
             }],
+            clickOrder: Array(9).fill(null),
             stepNumber: 0,
             xIsNext: true,
         };
@@ -78,15 +79,18 @@ import './index.css';
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
+        const clickOrder = this.state.clickOrder.slice();
 
         if (calculateWinner(squares) || squares[i]) {
             return;
         }
         squares[i] = this.state.xIsNext? 'X' : 'O';
+        clickOrder[this.state.stepNumber] = i;
         this.setState({
             history: history.concat([{
                 squares: squares,
             }]),
+            clickOrder: clickOrder,
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext
         });
@@ -153,6 +157,18 @@ import './index.css';
     }
 
     return null;
+
+  }
+
+  function getRowNumber() {
+    const rowIndices = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8]
+    ];
+  }
+
+  function getColumnNumber() {
 
   }
   
