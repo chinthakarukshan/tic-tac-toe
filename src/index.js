@@ -61,7 +61,9 @@ import './index.css';
             history: [{
                 squares: Array(9).fill(null),
             }],
-            clickOrder: Array(9).fill(null),
+            clickHistory: [{
+                squareId: null,
+            }],
             stepNumber: 0,
             xIsNext: true,
         };
@@ -79,18 +81,19 @@ import './index.css';
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
-        const clickOrder = this.state.clickOrder.slice();
+        const clickHistory = this.state.clickHistory.slice(0, this.state.stepNumber + 1);
 
         if (calculateWinner(squares) || squares[i]) {
             return;
         }
         squares[i] = this.state.xIsNext? 'X' : 'O';
-        clickOrder[this.state.stepNumber] = i;
         this.setState({
             history: history.concat([{
                 squares: squares,
             }]),
-            clickOrder: clickOrder,
+            clickHistory: clickHistory.concat({
+                squareId: i,
+            }),
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext
         });
@@ -100,10 +103,17 @@ import './index.css';
       const history = this.state.history;
       const currentEntry = history[this.state.stepNumber];
       const winner = calculateWinner(currentEntry.squares);
+      const clickHistory = this.state.clickHistory;
+      let coordinates;
 
       const moves = history.map((step,move) => {
+        const selectedSquare = clickHistory[move];
+        const selectedSquareId = selectedSquare.squareId;
+        if (selectedSquare) {
+            coordinates = getCoordinates(selectedSquareId);
+          }
         const desc = move ? 
-            'Go to move #' + move :
+            'Go to move #' + move + '(' + coordinates + ')' :
             'Go to game start';
         return (
             <li key={move}>
@@ -160,12 +170,37 @@ import './index.css';
 
   }
 
-  function getRowNumber() {
+  function getCoordinates(squareId) {
+      let column;
+      let row;
+      let coordinates;
     const rowIndices = [
         [0,1,2],
         [3,4,5],
         [6,7,8]
     ];
+    const columnIndices = [
+        [0,3,6],
+        [1,4,7],
+        [2,5,8]
+    ];
+
+    for (let i = 0; i < rowIndices.length; i++) {
+        const[a,b,c] = rowIndices[i];
+        if (a === squareId || b === squareId || c === squareId) {
+            coordinates = i + 1;
+        }
+    }
+
+    for (let i = 0; i < columnIndices.length; i++) {
+        const[a,b,c] = columnIndices[i];
+        if (a === squareId || b === squareId || c === squareId) {
+            coordinates = coordinates + ',' + (i + 1);
+        }
+    }
+
+    return coordinates;
+
   }
 
   function getColumnNumber() {
