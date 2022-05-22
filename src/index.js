@@ -23,30 +23,28 @@ import './index.css';
   
   class Board extends React.Component {
 
-    renderSquare(i) {
-      return <Square 
-        value={this.props.squares[i]}
-        onClick={() => this.props.onClick(i)}
-      />;
-    }
-  
     render() {
+        const rows = [];
+        for (let i = 0; i<3;i++) {
+            var columns = [];
+            for (let j=0;j<3;j++) {
+                columns.push(<Square 
+                    value={this.props.squares[3 * i + j]}
+                    onClick={() => this.props.onClick(3 * i + j)}
+                  />);
+            }
+            rows[i] = columns;
+        }
       return (
         <div>
           <div className="board-row">
-            {this.renderSquare(0)}
-            {this.renderSquare(1)}
-            {this.renderSquare(2)}
+            {rows[0]}
           </div>
           <div className="board-row">
-            {this.renderSquare(3)}
-            {this.renderSquare(4)}
-            {this.renderSquare(5)}
+            {rows[1]}
           </div>
           <div className="board-row">
-            {this.renderSquare(6)}
-            {this.renderSquare(7)}
-            {this.renderSquare(8)}
+            {rows[2]}
           </div>
         </div>
       );
