@@ -20,17 +20,15 @@ import './index.css';
         </button>
     );
   }
-  
-  class Board extends React.Component {
 
-    render() {
-        const rows = [];
+  function Board(props) {
+    const rows = [];
         for (let i = 0; i<3;i++) {
             var columns = [];
             for (let j=0;j<3;j++) {
                 columns.push(<Square 
-                    value={this.props.squares[3 * i + j]}
-                    onClick={() => this.props.onClick(3 * i + j)}
+                    value={props.squares[3 * i + j]}
+                    onClick={() => props.onClick(3 * i + j)}
                   />);
             }
             rows[i] = columns;
@@ -48,7 +46,6 @@ import './index.css';
           </div>
         </div>
       );
-    }
   }
   
   class Game extends React.Component {
