@@ -24,26 +24,19 @@ import './index.css';
   function Board(props) {
     const rows = [];
         for (let i = 0; i<3;i++) {
-            var columns = [];
+            let columns = [];
             for (let j=0;j<3;j++) {
                 columns.push(<Square 
                     value={props.squares[3 * i + j]}
                     onClick={() => props.onClick(3 * i + j)}
                   />);
             }
-            rows[i] = columns;
+            //rows[i] = columns;
+        rows.push(<div className="board-row">{columns}</div>);
         }
       return (
         <div>
-          <div className="board-row">
-            {rows[0]}
-          </div>
-          <div className="board-row">
-            {rows[1]}
-          </div>
-          <div className="board-row">
-            {rows[2]}
-          </div>
+          {rows}
         </div>
       );
   }
