@@ -54,6 +54,7 @@ import './index.css';
             }],
             stepNumber: 0,
             xIsNext: true,
+            isAscendingOrder: true,
         };
     }
 
@@ -87,11 +88,18 @@ import './index.css';
         });
     }
 
+    orderMoves() {
+      this.setState({
+        isAscendingOrder: !this.state.isAscendingOrder,
+      });
+    }
+
     render() {
       const history = this.state.history;
       const currentEntry = history[this.state.stepNumber];
       const winner = calculateWinner(currentEntry.squares);
       const clickHistory = this.state.clickHistory;
+      const orderType = this.state.isAscendingOrder? "Decending" : "Ascending";
       let coordinates;
 
       const moves = history.map((step,move) => {
@@ -136,6 +144,7 @@ import './index.css';
           </div>
           <div className="game-info">
             <div>{status}</div>
+            <button onClick={() => this.orderMoves()}>Order {orderType}</button>
             <ol>{moves}</ol>
           </div>
         </div>
