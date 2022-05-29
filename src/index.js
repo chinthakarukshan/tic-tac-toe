@@ -14,22 +14,41 @@ import './index.css';
   }*/
 
   function Square(props) {
-    return (
+    
+    if (props.winner) {
+      return (
+        <button className="square-win" onClick={props.onClick}>
+          {props.value}
+        </button>
+      );
+    } else {
+      return (
         <button className="square" onClick={props.onClick}>
           {props.value}
         </button>
-    );
+      );
+    }
   }
 
   function Board(props) {
     const rows = [];
+    const winner = props.winner;
         for (let i = 0; i<3;i++) {
             let columns = [];
             for (let j=0;j<3;j++) {
-                columns.push(<Square 
+                if (winner && (winner[0] === (3 * i + j) || winner[1] === (3 * i + j) || winner[2] === (3 * i + j))) {
+                  columns.push(<Square 
                     value={props.squares[3 * i + j]}
                     onClick={() => props.onClick(3 * i + j)}
+                    winner={true}
                   />);
+                } else {
+                  columns.push(<Square 
+                    value={props.squares[3 * i + j]}
+                    onClick={() => props.onClick(3 * i + j)}
+                    winner={false}
+                  />);
+                }
             }
             //rows[i] = columns;
         rows.push(<div className="board-row">{columns}</div>);
@@ -135,7 +154,7 @@ import './index.css';
 
       let status;
       if (winner) {
-        status = 'Winner is: ' + winner;
+        status = 'Winner is: ' + currentEntry.squares[winner[0]];
       } else {
         const player = this.state.xIsNext ? 'X' : 'O';
         status = 'Next player: ' + player;
@@ -147,6 +166,7 @@ import './index.css';
             <Board 
                 squares={currentEntry.squares}
                 onClick={(i) => this.handleClick(i)}
+                winner={winner}
             />
           </div>
           <div className="game-info">
@@ -174,7 +194,7 @@ import './index.css';
     for(let i = 0; i < winningCombinations.length; i++) {
         const [a,b,c] = winningCombinations[i];
         if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a];
+            return winningCombinations[i];
         }
     }
 
