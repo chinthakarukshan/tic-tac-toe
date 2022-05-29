@@ -155,6 +155,8 @@ import './index.css';
       let status;
       if (winner) {
         status = 'Winner is: ' + currentEntry.squares[winner[0]];
+      } else if (this.state.stepNumber === 9) {
+        status = 'No Winners. Match is draw.';
       } else {
         const player = this.state.xIsNext ? 'X' : 'O';
         status = 'Next player: ' + player;
