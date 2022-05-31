@@ -205,8 +205,6 @@ import './index.css';
   }
 
   function getCoordinates(squareId) {
-      let column;
-      let row;
       let coordinates;
     const rowIndices = [
         [0,1,2],
@@ -234,10 +232,6 @@ import './index.css';
     }
 
     return coordinates;
-
-  }
-
-  function getColumnNumber() {
 
   }
   
